@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
     char nome0[100];
@@ -35,7 +36,7 @@ int main(void){
             system("cls");
 
             printf("--------------------------------------------------------------\n \n");
-            printf("\t\t\tSeja Bem Vindo, Atendente %s\n", nome);
+            printf("\t  Seja Bem Vindo, Atendente %s\n", nome);
             printf("_______________________________________________________________\n");
             printf("1-Cadastrar\n");
             printf("2-Exibir dados\n");
@@ -43,7 +44,7 @@ int main(void){
             printf("4-Excluir\n");
             printf("5-Sair\n");
             printf("--------------------------------------------------------------\n \n");
-            printf("Qual das opções deseja acessar? ");
+            printf("Qual das opcoes deseja acessar? ");
             scanf("%d", &op);
 
             switch(op){
@@ -61,10 +62,10 @@ int main(void){
                     printf("Nome do Produto: ");
                     fflush(stdin);
                     scanf("%[^\n]s", CA[contador].nome2);
-                    printf("Código do Produto: ");
+                    printf("Codigo do Produto: ");
                     fflush(stdin);
                     scanf("%[^\n]s", CA[contador].nome3);
-                    printf("Preço do Produto: ");
+                    printf("Preco do Produto: ");
                     fflush(stdin);
                     scanf("%[^\n]s", CA[contador].nome4);
                     printf("\n\n\t\t");
@@ -74,13 +75,13 @@ int main(void){
 
                 case 2:
                     system("cls");
-                    printf("\n\n\t\t\t           INICIANDO CADASTRO\n");
+                    printf("\n\n\t\t\t           EXIBIR CADASTRO\n");
                     printf("\t\t\t      --------------------------\n\n");
                     printf("Nome do Cliente:      %s\n", CA[contador].nome0);
                     printf("Telefone do Cliente:  %s\n", CA[contador].nome1);
                     printf("Nome do Produto:      %s\n", CA[contador].nome2);
-                    printf("Código do Produto:    %s\n", CA[contador].nome3);
-                    printf("Preço do Produto:     %s\n", CA[contador].nome4);
+                    printf("Codigo do Produto:    %s\n", CA[contador].nome3);
+                    printf("Preco do Produto:     R$%s\n", CA[contador].nome4);
                     system("pause");
                 break;  
 
@@ -91,9 +92,9 @@ int main(void){
                     printf("1-Nome do Cliente\n");
                     printf("2-Telefone do Cliente\n");
                     printf("3-Nome do Produto\n");
-                    printf("4-Código do Produto\n");
-                    printf("5-Preço do Produto\n");
-                    printf("Qual das opções deseja alterar? \n");
+                    printf("4-Codigo do Produto\n");
+                    printf("5-Preco do Produto\n");
+                    printf("Qual das opcoes deseja alterar? \n");
                     scanf("%d", &op1);
 
                     switch(op1){
@@ -101,8 +102,8 @@ int main(void){
                         system("cls");
                         printf("CADASTRO\n");
                         printf("Alterar Nome do Cliente: ");
-                        fflush("stdin");
-                        scanf("%[^\n]s", &CA[contador].nome0);
+                        fflush(stdin);
+                        scanf("%[^\n]s", CA[contador].nome0);
                         printf("Nome alterado com sucesso!\n\t\t");
                         system("pause");
                         break;  
@@ -111,8 +112,8 @@ int main(void){
                         system("cls");
                         printf("CADASTRO\n");
                         printf("Alterar Telefone do Cliente: ");
-                        fflush("stdin");
-                        scanf("%[^\n]s", &CA[contador].nome1);
+                        fflush(stdin);
+                        scanf("%[^\n]s", CA[contador].nome1);
                         printf("Telefone alterado com sucesso!\n\t\t");
                         system("pause");
                         break; 
@@ -121,8 +122,8 @@ int main(void){
                         system("cls");
                         printf("CADASTRO\n");
                         printf("Alterar Nome do Produto: ");
-                        fflush("stdin");
-                        scanf("%[^\n]s", &CA[contador].nome2);
+                        fflush(stdin);
+                        scanf("%[^\n]s", CA[contador].nome2);
                         printf("Nome alterado com sucesso!\n\t\t");
                         system("pause");
                         break; 
@@ -130,19 +131,19 @@ int main(void){
                         case 4:
                         system("cls");
                         printf("CADASTRO\n");
-                        printf("Alterar Código do Produto: ");
-                        fflush("stdin");
-                        scanf("%[^\n]s", &CA[contador].nome3);
-                        printf("Código alterado com sucesso!\n\t\t");
+                        printf("Alterar Codigo do Produto: ");
+                        fflush(stdin);
+                        scanf("%[^\n]s", CA[contador].nome3);
+                        printf("Codigo alterado com sucesso!\n\t\t");
                         system("pause");
                         break; 
 
                         case 5:
                         system("cls");
                         printf("CADASTRO\n");
-                        printf("Alterar Preço do Produto: ");
-                        fflush("stdin");
-                        scanf("%[^\n]s", &CA[contador].nome4);
+                        printf("Alterar Preco do Produto: ");
+                        fflush(stdin);
+                        scanf("%[^\n]s", CA[contador].nome4);
                         printf("Preço alterado com sucesso!\n\t\t");
                         system("pause");
                         break; 
@@ -158,10 +159,10 @@ int main(void){
                 printf("1-Nome do Cliente\n");
                 printf("2-Telefone do Cliente\n");
                 printf("3-Nome do Produto\n");
-                printf("4-Código do Produto\n");
-                printf("5-Preço do Produto\n");
+                printf("4-Codigo do Produto\n");
+                printf("5-Preco do Produto\n");
                 printf("6-Excluir todos os dados\n");
-                printf("Qual opção você deseja acessar?\n");
+                printf("Qual opcao voce deseja acessar?\n");
                 scanf("%d", &op4);
 
                 switch(op4){
@@ -218,8 +219,8 @@ int main(void){
 
                 case 5:
                 system("cls");
-                printf("Você Deseja Realmente Sair do Sistema?\n");
-                printf("1 - Sim     2 - Não\n");
+                printf("Voce Deseja Realmente Sair do Sistema?\n");
+                printf("1 - Sim     2 - Nao\n");
                 scanf("%d", &op2);
                 
                 switch(op2){
@@ -236,7 +237,7 @@ int main(void){
         break;
     
     default:
-        printf("Opção Inválida!");
+        printf("Opcao Invalida!");
         break;
         }
     }
