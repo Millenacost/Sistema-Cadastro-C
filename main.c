@@ -2,20 +2,161 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-    char nome0[100];
-    char nome1[100];
-    char nome2[100];
-    char nome3[100];
-    char nome4[100];
+typedef struct cliente {
+    char nome0[100]; // nome do cliente
+    char nome1[100]; // telefone do cliente 
+    char nome2[100];  // nome do produto
+    char nome3[100];   // codigo do produto
+    char nome4[100];   // preco do produto
+    struct cliente *prox;
+}CLista;
 
-}Cadastro;
+CLista* cadastro_cli(CLista *lst){
+    CLista *novo;
+    novo =  (CLista*)malloc(sizeof(CLista));
+    printf("Nome do Cliente: ");
+    fflush(stdin);
+    fgets(novo->nome0, 100, stdin);
+    printf("Telefone do Cliente: ");
+    fflush(stdin);
+    fgets(novo->nome1, 100, stdin);
+    printf("Nome do Produto: ");
+    fflush(stdin);
+    fgets(novo->nome2, 100, stdin);
+    printf("Codigo do Produto: ");
+    fflush(stdin);
+    fgets(novo->nome3, 100, stdin);
+    printf("Preco do Produto: ");
+    fflush(stdin);
+    fgets(novo->nome4, 100, stdin);
+
+    novo->prox = NULL;
+
+    if (lst==NULL) { // se lista de clientes estiver vazia
+        lst = novo;
+    } else {
+        CLista *aux = lst;
+        while(aux->prox!=NULL) aux = aux->prox; // procuro ultimo no
+        aux->prox = novo; // ultimo cliente aponta para o novo
+    }
+    return lst;
+}
+
+void exibir_cli(CLista *lst){
+    if (lst==NULL) {
+        printf("Nao ha clientes cadatrados!\n");
+        return;
+    }
+    char nome[100];
+    system("cls");
+    printf("Nome do Cliente: ");
+    fflush(stdin);
+    fgets(nome, 100, stdin);
+    CLista *aux = lst;
+    
+    int valor = strcmp(aux->nome0,nome);
+    while(valor!=0 && aux!=NULL){
+        aux = aux->prox;
+        if (aux!=NULL)valor = strcmp(aux->nome0,nome);
+    }
+    if (aux==NULL && valor!=0){
+        printf("Usuario nao encontrado!\n");
+        return;
+    }
+    system("cls");
+    printf("Nome do Cliente:      %s\n", aux->nome0);
+    printf("Telefone do Cliente:  %s\n", aux->nome1);
+    printf("Nome do Produto:      %s\n", aux->nome2);
+    printf("Codigo do Produto:    %s\n", aux->nome3);
+    printf("Preco do Produto:     R$%s\n", aux->nome4);
+    return;
+}
+
+CLista* alterar_cli(CLista *lst, int op, char nome[]){
+    CLista *aux = lst;
+    int valor = strcmp(aux->nome0,nome);
+    while(valor!=0 && aux!=NULL){
+        aux = aux->prox;
+        valor = strcmp(aux->nome0,nome);
+    }
+    if (aux==NULL && valor!=0){
+        printf("Usuario nao encontrado!\n");
+        return lst;
+    }
+    switch(op){
+        case 1:
+        system("cls");
+        printf("CADASTRO\n");
+        printf("Novo nome do Cliente: ");
+        fflush(stdin);
+        fgets(aux->nome0, 100, stdin);
+        printf("Nome alterado com sucesso!\n\t\t");
+        system("pause");
+        break;  
+
+        case 2:
+        system("cls");
+        printf("CADASTRO\n");
+        printf("Novo Telefone do Cliente: ");
+        fflush(stdin);
+        fgets(aux->nome1, 100, stdin);
+        printf("Telefone alterado com sucesso!\n\t\t");
+        system("pause");
+        break; 
+
+        case 3:
+        system("cls");
+        printf("CADASTRO\n\n");
+        printf("Novo nome do Produto: ");
+        fflush(stdin);
+        fgets(aux->nome2, 100, stdin);
+        printf("Nome alterado com sucesso!\n\t\t");
+        system("pause");
+        break; 
+
+        case 4:
+        system("cls");
+        printf("CADASTRO\n");
+        printf("Novo Codigo do Produto: ");
+        fflush(stdin);
+        fgets(aux->nome3, 100, stdin);
+        printf("Codigo alterado com sucesso!\n\t\t");
+        system("pause");
+        break; 
+
+        case 5:
+        system("cls");
+        printf("CADASTRO\n");
+        printf("Novo Preco do Produto: ");
+        fflush(stdin);
+        fgets(aux->nome4, 100, stdin);
+        printf("Preço alterado com sucesso!\n\t\t");
+        system("pause");
+        break;
+    }  
+    return lst;   
+}
+
+CLista* remove_cli(CLista *lst){ // remove todos clientes alocados
+    CLista *aux1 = lst;
+    CLista *aux2;
+    
+    while(aux1!=NULL){
+        aux2 = aux1;
+        aux1 = aux1->prox;
+        free(aux2);
+    }
+    lst = NULL;
+    printf("Cadastros excluidos com sucesso!\n");
+    return lst;
+}
 
 int main(void){
     int op, op1, op2, op3, op4;
     char nome[100];
-    Cadastro CA[100];
-    int contador= -1;
+ 
+    CLista *clientes = NULL; // criei uma lista vazia
+
 
     system("cls");
     printf("Nome do Atendente: ");
@@ -49,25 +190,10 @@ int main(void){
 
             switch(op){
                 case 1:
-                    contador++;
                     system("cls");
                     printf("\n\n\t\t\t           INICIANDO CADASTRO\n");
                     printf("\t\t\t      --------------------------\n\n");
-                    printf("Nome do Cliente: ");
-                    fflush(stdin);
-                    scanf("%[^\n]s", CA[contador].nome0);
-                    printf("Telefone do Cliente: ");
-                    fflush(stdin);
-                    scanf("%[^\n]s", CA[contador].nome1);
-                    printf("Nome do Produto: ");
-                    fflush(stdin);
-                    scanf("%[^\n]s", CA[contador].nome2);
-                    printf("Codigo do Produto: ");
-                    fflush(stdin);
-                    scanf("%[^\n]s", CA[contador].nome3);
-                    printf("Preco do Produto: ");
-                    fflush(stdin);
-                    scanf("%[^\n]s", CA[contador].nome4);
+                    clientes = cadastro_cli(clientes);
                     printf("\n\n\t\t");
                     system("pause");
                     system("cls");
@@ -77,16 +203,20 @@ int main(void){
                     system("cls");
                     printf("\n\n\t\t\t           EXIBIR CADASTRO\n");
                     printf("\t\t\t      --------------------------\n\n");
-                    printf("Nome do Cliente:      %s\n", CA[contador].nome0);
-                    printf("Telefone do Cliente:  %s\n", CA[contador].nome1);
-                    printf("Nome do Produto:      %s\n", CA[contador].nome2);
-                    printf("Codigo do Produto:    %s\n", CA[contador].nome3);
-                    printf("Preco do Produto:     R$%s\n", CA[contador].nome4);
+                    exibir_cli(clientes);
                     system("pause");
                 break;  
 
-                case 3: 
+                case 3:
+                    if (clientes!=NULL){ 
+                    
+                    char cliente[100];
                     system("cls");
+                    printf("--------------------------------------------------------------\n \n");
+                    printf("Nome do Cliente: ");
+                    fflush(stdin);
+                    fgets(cliente, 100, stdin);
+                    printf("--------------------------------------------------------------\n \n");
                     printf("\n\n\t\t\t           ALTERAR CADASTRO\n");
                     printf("\t\t\t      --------------------------\n\n");
                     printf("1-Nome do Cliente\n");
@@ -96,63 +226,25 @@ int main(void){
                     printf("5-Preco do Produto\n");
                     printf("Qual das opcoes deseja alterar? \n");
                     scanf("%d", &op1);
-
-                    switch(op1){
-                        case 1:
+                    clientes = alterar_cli(clientes,op1,cliente);
+                    } else {
                         system("cls");
-                        printf("CADASTRO\n");
-                        printf("Alterar Nome do Cliente: ");
-                        fflush(stdin);
-                        scanf("%[^\n]s", CA[contador].nome0);
-                        printf("Nome alterado com sucesso!\n\t\t");
-                        system("pause");
-                        break;  
-
-                        case 2:
-                        system("cls");
-                        printf("CADASTRO\n");
-                        printf("Alterar Telefone do Cliente: ");
-                        fflush(stdin);
-                        scanf("%[^\n]s", CA[contador].nome1);
-                        printf("Telefone alterado com sucesso!\n\t\t");
-                        system("pause");
-                        break; 
-
-                        case 3:
-                        system("cls");
-                        printf("CADASTRO\n");
-                        printf("Alterar Nome do Produto: ");
-                        fflush(stdin);
-                        scanf("%[^\n]s", CA[contador].nome2);
-                        printf("Nome alterado com sucesso!\n\t\t");
-                        system("pause");
-                        break; 
-
-                        case 4:
-                        system("cls");
-                        printf("CADASTRO\n");
-                        printf("Alterar Codigo do Produto: ");
-                        fflush(stdin);
-                        scanf("%[^\n]s", CA[contador].nome3);
-                        printf("Codigo alterado com sucesso!\n\t\t");
-                        system("pause");
-                        break; 
-
-                        case 5:
-                        system("cls");
-                        printf("CADASTRO\n");
-                        printf("Alterar Preco do Produto: ");
-                        fflush(stdin);
-                        scanf("%[^\n]s", CA[contador].nome4);
-                        printf("Preço alterado com sucesso!\n\t\t");
-                        system("pause");
-                        break; 
-
-
+                        printf("Nao ha clientes cadastrados!\n");
                     }
+                    system("pause");
+                    
                 break;
 
                 case 4:
+                system("cls");
+                printf("\n\n\t\t\t           EXCLUIR CADASTRO\n");
+                printf("\t\t\t      --------------------------\n\n");
+                clientes = remove_cli(clientes);
+                system("pause");
+                break;
+
+
+           /*     case 4:
                 system("cls");
                 printf("\n\n\t\t\t           EXCLUIR CADASTRO\n");
                 printf("\t\t\t      --------------------------\n\n");
@@ -216,7 +308,7 @@ int main(void){
 
                 }
                 break;
-
+*/
                 case 5:
                 system("cls");
                 printf("Voce Deseja Realmente Sair do Sistema?\n");
@@ -226,7 +318,7 @@ int main(void){
                 switch(op2){
                     case 1:
                     system("cls");
-                    printf("Acesso Finalizado com Sucesso!\n");
+                    printf("Acesso Finalizado com Sucesso! Volte Sempre!\n");
                     system("pause");
                     return 0;
                     break;
