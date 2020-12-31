@@ -5,30 +5,92 @@
 typedef struct cliente {
     char nome0[100]; // nome do cliente
     char nome1[100]; // telefone do cliente 
-    char nome2[100];  // nome do produto
-    char nome3[100];   // codigo do produto
-    char nome4[100];   // preco do produto
+    char nome2[100]; // cpf
+    char nome3[100]; // nome do produto
+    char nome4[100]; // codigo do produto
+    char nome5[100]; // preco do produto
     struct cliente *prox;
 }CLista;
 
+int validaCPF(char vetor[]){
+    int cpf, soma = 0, num = 10, resto, i,j;
+
+    //verifica se todos caracteres sao iguais=invalido
+    int iguais = 0;
+    for(i=0;i<=10;i++){
+        if(vetor[0]==vetor[i]){
+            iguais++;
+        }
+    }
+    if(iguais==11) return 0;
+
+
+    if(strlen(vetor)==11){ //quantidade de numeros valido 
+
+    for (i = 0; i<=8; i++){ // 1 validacao
+        cpf = vetor[i] - '0';
+        soma = soma + cpf*num;
+        num--;
+    }
+    resto = (soma*10) % 11;
+    cpf = vetor[9] - '0';
+    if(resto==cpf){ // 2 validacao
+        soma = 0;
+        num = 11;
+        for (i = 0; i<=9; i++){
+            cpf = vetor[i] - '0';
+            soma = soma + cpf*num;
+            num--;
+        }
+        resto = (soma*10) % 11;
+        cpf = vetor[10] - '0';
+        if(resto==cpf){
+            return 1; //valido
+        }
+    }else{
+
+        return 0; // invalido
+    }
+    }else{
+        return 0; 
+    }
+
+}
+
+
 CLista* cadastro_cli(CLista *lst){
+    char cpf[12];
+    printf("CPF do Cliente: ");
+    fflush(stdin);
+    fgets(cpf, 12, stdin);
+    int valido = validaCPF(cpf);
+    if(valido!=1){
+        printf("CPF inválido!\n");
+        cadastro_cli(lst);
+        return lst;
+    }
+
     CLista *novo;
     novo =  (CLista*)malloc(sizeof(CLista));
+    strcpy(novo->nome2,cpf);
+
     printf("Nome do Cliente: ");
     fflush(stdin);
     fgets(novo->nome0, 100, stdin);
     printf("Telefone do Cliente: ");
     fflush(stdin);
     fgets(novo->nome1, 100, stdin);
+
+
     printf("Nome do Produto: ");
     fflush(stdin);
-    fgets(novo->nome2, 100, stdin);
+    fgets(novo->nome3, 100, stdin);
     printf("Codigo do Produto: ");
     fflush(stdin);
-    fgets(novo->nome3, 100, stdin);
+    fgets(novo->nome4, 100, stdin);
     printf("Preco do Produto: ");
     fflush(stdin);
-    fgets(novo->nome4, 100, stdin);
+    fgets(novo->nome5, 100, stdin);
 
     novo->prox = NULL;
 
@@ -39,6 +101,7 @@ CLista* cadastro_cli(CLista *lst){
         while(aux->prox!=NULL) aux = aux->prox; // procuro ultimo no
         aux->prox = novo; // ultimo cliente aponta para o novo
     }
+    printf("Cliente cadastrado com sucesso!\n");
     return lst;
 }
 
@@ -47,17 +110,17 @@ void exibir_cli(CLista *lst){
         printf("Nao ha clientes cadatrados!\n");
         return;
     }
-    char nome[100];
+    char cpf[12];
     system("cls");
-    printf("Nome do Cliente: ");
+    printf("CPF do Cliente: ");
     fflush(stdin);
-    fgets(nome, 100, stdin);
+    fgets(cpf, 12, stdin);
     CLista *aux = lst;
     
-    int valor = strcmp(aux->nome0,nome);
+    int valor = strcmp(aux->nome2,cpf);
     while(valor!=0 && aux!=NULL){
         aux = aux->prox;
-        if (aux!=NULL)valor = strcmp(aux->nome0,nome);
+        if (aux!=NULL)valor = strcmp(aux->nome2,cpf);
     }
     if (aux==NULL && valor!=0){
         printf("Usuario nao encontrado!\n");
@@ -66,18 +129,19 @@ void exibir_cli(CLista *lst){
     system("cls");
     printf("Nome do Cliente:      %s\n", aux->nome0);
     printf("Telefone do Cliente:  %s\n", aux->nome1);
-    printf("Nome do Produto:      %s\n", aux->nome2);
-    printf("Codigo do Produto:    %s\n", aux->nome3);
-    printf("Preco do Produto:     R$%s\n", aux->nome4);
+    printf("CPF do Cliente:       %s\n", aux->nome2);
+    printf("Nome do Produto:      %s\n", aux->nome3);
+    printf("Codigo do Produto:    %s\n", aux->nome4);
+    printf("Preco do Produto:     R$%s\n", aux->nome5);
     return;
 }
 
-CLista* alterar_cli(CLista *lst, int op, char nome[]){
+CLista* alterar_cli(CLista *lst, int op, char cpf[]){
     CLista *aux = lst;
-    int valor = strcmp(aux->nome0,nome);
+    int valor = strcmp(aux->nome2,cpf);
     while(valor!=0 && aux!=NULL){
         aux = aux->prox;
-        valor = strcmp(aux->nome0,nome);
+        valor = strcmp(aux->nome2,cpf);
     }
     if (aux==NULL && valor!=0){
         printf("Usuario nao encontrado!\n");
@@ -107,29 +171,39 @@ CLista* alterar_cli(CLista *lst, int op, char nome[]){
         case 3:
         system("cls");
         printf("CADASTRO\n\n");
-        printf("Novo nome do Produto: ");
+        printf("Novo CPF: ");
         fflush(stdin);
         fgets(aux->nome2, 100, stdin);
-        printf("Nome alterado com sucesso!\n\t\t");
+        printf("CPF alterado com sucesso!\n\t\t");
         system("pause");
         break; 
 
         case 4:
         system("cls");
-        printf("CADASTRO\n");
-        printf("Novo Codigo do Produto: ");
+        printf("CADASTRO\n\n");
+        printf("Novo nome do Produto: ");
         fflush(stdin);
         fgets(aux->nome3, 100, stdin);
-        printf("Codigo alterado com sucesso!\n\t\t");
+        printf("Nome alterado com sucesso!\n\t\t");
         system("pause");
         break; 
 
         case 5:
         system("cls");
         printf("CADASTRO\n");
-        printf("Novo Preco do Produto: ");
+        printf("Novo Codigo do Produto: ");
         fflush(stdin);
         fgets(aux->nome4, 100, stdin);
+        printf("Codigo alterado com sucesso!\n\t\t");
+        system("pause");
+        break; 
+
+        case 6:
+        system("cls");
+        printf("CADASTRO\n");
+        printf("Novo Preco do Produto: ");
+        fflush(stdin);
+        fgets(aux->nome5, 100, stdin);
         printf("Preço alterado com sucesso!\n\t\t");
         system("pause");
         break;
@@ -150,6 +224,7 @@ CLista* remove_cli(CLista *lst){ // remove todos clientes alocados
     printf("Cadastros excluidos com sucesso!\n");
     return lst;
 }
+
 
 int main(void){
     int op, op1, op2, op3, op4;
@@ -210,10 +285,10 @@ int main(void){
                 case 3:
                     if (clientes!=NULL){ 
                     
-                    char cliente[100];
+                    char cliente[100]; // cpf
                     system("cls");
                     printf("--------------------------------------------------------------\n \n");
-                    printf("Nome do Cliente: ");
+                    printf("CPF do Cliente: ");
                     fflush(stdin);
                     fgets(cliente, 100, stdin);
                     printf("--------------------------------------------------------------\n \n");
