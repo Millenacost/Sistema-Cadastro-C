@@ -212,16 +212,53 @@ CLista* alterar_cli(CLista *lst, int op, char cpf[]){
 }
 
 CLista* remove_cli(CLista *lst){ // remove todos clientes alocados
+    int op;
+    printf("1 - Remover Cliente    2 - Remover todos os Clientes\n");
+    printf("Digite uma das alternativas acima: ");
+    scanf("%d", &op);    
+
     CLista *aux1 = lst;
     CLista *aux2;
-    
+
+    if(op==1){
+        system("cls");
+        char cpf[12];
+        printf("Digite o CPF do Cliente: ");
+        scanf("%s", cpf);
+        int compareString = strcmp(aux1->nome2,cpf);
+        while (compareString!=0 && aux1!=NULL){
+            aux2 = aux1;
+            aux1 = aux1->prox;
+            compareString = strcmp(aux1->nome2,cpf);
+        }
+        if(compareString!=0){ // cpf nao encontrado na lista
+            printf("Cliente nao encontrado!\n");
+            return lst;
+        }
+        if(aux1==lst){ // cliente se encontra no inicio da lista
+            lst = lst->prox;
+            free(aux1);
+        } else if(aux1->prox==NULL) { // final da lista
+                aux2->prox = NULL;
+                free(aux1);
+        } else {
+            aux2->prox = aux1->prox; // meio da lista
+            free(aux1);
+        }
+        printf("Cliente excluido com sucesso!\n");
+
+    } else if(op==2){
+ 
     while(aux1!=NULL){
         aux2 = aux1;
         aux1 = aux1->prox;
         free(aux2);
     }
     lst = NULL;
-    printf("Cadastros excluidos com sucesso!\n");
+    printf("\nCadastros excluidos com sucesso!\n");
+    } else {
+        printf("Opcao invalida!\n");
+    }
     return lst;
 }
 
